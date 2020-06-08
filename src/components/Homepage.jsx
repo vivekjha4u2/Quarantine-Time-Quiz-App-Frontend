@@ -1,35 +1,47 @@
 import React from "react";
-import { Navbar, Button, Form } from "react-bootstrap";
-import SelectQuestion from "./SelectQuestion";
 
 export default class Homepage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: "",
-    };
+    this.state = {};
   }
-  handleSubmit = (e) => {
-    this.setState({ name: "name" });
-    //save username in db and create questionaire for him
-    // <SelectQuestion />;
-  };
+  componentDidMount() {}
+
   render() {
     return (
       <div className="container-fluid">
-        <Navbar bg="dark" expand="lg" variant="dark">
-          <Navbar.Brand href="#home">Q-Time</Navbar.Brand>
-        </Navbar>
-        <Form onSubmit={this.handleSubmit}>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Name: </Form.Label>
-            <Form.Control type="text" placeholder="Enter your name" />
-          </Form.Group>
+        {/* {this.state.success.length>0?<Redirect to="/order"></Redirect>:""} */}
 
-          <Button variant="primary" type="submit">
-            Create Questionaire
-          </Button>
-        </Form>
+        <button style={{ margin: 2 + "rem" }}>
+          <a href="/Questionnaire">
+            <div className="card" style={{ width: 18 + "rem" }}>
+              <img
+                style={{ height: 14 + "rem" }}
+                className="card-img-top"
+                src="https://nie-images.s3.amazonaws.com/gall_content/2017/8/2017_8$largeimg24_Aug_2017_154906303.jpg"
+                alt="Card image cap"
+              />
+              <div className="card-body">
+                <p className="card-text">Interesting Questionaire</p>
+              </div>
+            </div>
+          </a>
+        </button>
+        <br></br>
+
+        <button>
+          <div className="card" style={{ width: 18 + "rem" }}>
+            <img
+              style={{ height: 14 + "rem" }}
+              className="card-img-top"
+              src="https://www.astrologysoftware.com/personal_reports/images/st_lifepath.jpg"
+              alt="Card image ca"
+            />
+            <div className="card-body">
+              <p className="card-text">Trace My Life Path</p>
+            </div>
+          </div>
+        </button>
       </div>
     );
   }
