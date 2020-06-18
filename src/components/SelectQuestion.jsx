@@ -23,10 +23,13 @@ export default class SelectQuestion extends React.Component {
   };
 
   createQuiz = () => {
-    const quizBackendURL = "http://localhost:5564/quiz/";
+    this.state.usersQuestions.forEach(this.postQuiz);
+  };
+  postQuiz = (item, index) => {
+    const quizBackendURL = "http://localhost:5564/quiz/create";
     const quizData = {
       quizId: this.props.quizId,
-      usersQuestions: this.state.usersQuestions,
+      question: item,
     };
     axios
       .post(quizBackendURL, quizData)
@@ -76,7 +79,7 @@ export default class SelectQuestion extends React.Component {
   render() {
     return (
       <div className="container-fluid">
-        <h6>Select 10 questions to create quiz</h6>
+        <h6 className="mt-1">Select 10 questions to create quiz</h6>
         {this.state.quesList.map((item, index) => {
           // console.log(item);
           return (
