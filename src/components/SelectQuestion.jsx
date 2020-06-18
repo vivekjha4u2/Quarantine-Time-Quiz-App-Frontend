@@ -1,25 +1,71 @@
 import React from "react";
-import { Card } from "react-bootstrap";
+import axios from "axios";
+import { Card, Button } from "react-bootstrap";
 
 export default class SelectQuestion extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      category: this.props.categ,
+      quesList: [],
+    };
+  }
+  componentDidMount() {
+    console.log("this.state.category: ", this.state.category);
+    this.fetchQuestions();
+  }
+
+  fetchQuestions = () => {
+    const url = "http://localhost:5564/question/" + this.state.category;
+    axios
+      .get(url)
+      .then((response) => {
+        // console.log(response.data);
+        this.setState({
+          quesList: response.data,
+          errorMessage: "",
+        });
+      })
+      .catch((error) => {
+        console.log("selectquestion axios get error");
+        if (error.status === 404) {
+          console.log(error.response.data.message);
+          this.setState({
+            errorMessage: error.response.data.message,
+            quesList: [],
+          });
+        } else {
+          console.log("other error");
+          this.setState({
+            errorMessage: "Could not fetch questions",
+            quesList: [],
+          });
+        }
+      });
+  };
+
   render() {
     return (
       <div className="container-fluid">
-        {/* get questions and map to cards */}
-        <Card style={{ width: "18rem" }}>
-          <Card.Body>
-            <Card.Title>Card Title</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">
-              Card Subtitle
-            </Card.Subtitle>
-            <Card.Text>
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </Card.Text>
-            <Card.Link href="#">Card Link</Card.Link>
-            <Card.Link href="#">Another Link</Card.Link>
-          </Card.Body>
-        </Card>
+        {this.state.quesList.map((item, index) => {
+          console.log(item);
+          return (
+            <div className="col-md-3 mt-2" key={index}>
+              <Card className="card shadow ">
+                <Card.Body>
+                  <Card.Title></Card.Title>
+                  <Card.Subtitle className="mb-2 text-muted">
+                    Question {index}
+                  </Card.Subtitle>
+                  <Card.Text>{item.question}</Card.Text>
+
+                  <Button className="btn-info">Add this question</Button>
+                  {/* <Card.Link href="#">Add</Card.Link> */}
+                </Card.Body>
+              </Card>
+            </div>
+          );
+        })}
       </div>
     );
   }
