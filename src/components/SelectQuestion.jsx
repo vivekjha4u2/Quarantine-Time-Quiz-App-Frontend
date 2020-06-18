@@ -8,12 +8,41 @@ export default class SelectQuestion extends React.Component {
     this.state = {
       category: this.props.categ,
       quesList: [],
+      usersQuestions: [],
+      clicked: false,
     };
   }
   componentDidMount() {
-    console.log("this.state.category: ", this.state.category);
+    // console.log("this.state.category: ", this.state.category);
     this.fetchQuestions();
   }
+  addQuestion = (ques) => {
+    this.state.usersQuestions.push(ques);
+    console.log(this.state.usersQuestions);
+    console.log("bd", this.props.quizId);
+  };
+
+  createQuiz = () => {
+    const quizBackendURL = "http://localhost:5564/quiz/";
+    const quizData = {
+      quizId: this.props.quizId,
+      usersQuestions: this.state.usersQuestions,
+    };
+    axios
+      .post(quizBackendURL, quizData)
+      .then((response) => {
+        console.log("response: ", response);
+        this.setState({ successMsg: response.data, errMsg: "" });
+      })
+      .catch((error) => {
+        this.setState({
+          errMsg: error.response
+            ? error.response.data.message
+            : "Internal Server Error",
+          successMsg: "",
+        });
+      });
+  };
 
   fetchQuestions = () => {
     const url = "http://localhost:5564/question/" + this.state.category;
@@ -47,25 +76,50 @@ export default class SelectQuestion extends React.Component {
   render() {
     return (
       <div className="container-fluid">
+        <h6>Select 10 questions to create quiz</h6>
         {this.state.quesList.map((item, index) => {
-          console.log(item);
+          // console.log(item);
           return (
             <div className="col-md-3 mt-2" key={index}>
               <Card className="card shadow ">
                 <Card.Body>
-                  <Card.Title></Card.Title>
+                  <Card.Title> </Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">
-                    Question {index}
+                    Question {index + 1}
                   </Card.Subtitle>
                   <Card.Text>{item.question}</Card.Text>
 
-                  <Button className="btn-info">Add this question</Button>
+                  <Button
+                    id={index}
+                    className="btn-info"
+                    onClick={() => {
+                      this.addQuestion(item.question);
+                      this.setState({ clicked: true });
+                    }}
+                    // disabled={this.state.clicked}
+                  >
+                    Add this question
+                  </Button>
                   {/* <Card.Link href="#">Add</Card.Link> */}
                 </Card.Body>
               </Card>
             </div>
           );
         })}
+        {this.state.usersQuestions.length === 10 ? (
+          <Button
+            onClick={() => {
+              this.createQuiz();
+            }}
+            className="btn-success fixed-bottom float-right"
+          >
+            Create Quiz
+          </Button>
+        ) : (
+          <Button className="btn-secondary fixed-bottom float-right" disabled>
+            Create Quiz
+          </Button>
+        )}
       </div>
     );
   }

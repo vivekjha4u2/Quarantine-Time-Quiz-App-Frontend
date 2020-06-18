@@ -12,6 +12,9 @@ export default class Homepage extends React.Component {
       name: "",
       gender: "",
       isSubmitted: false,
+      //successMsg has response.data which has quizid
+      successMsg: "",
+      errMsg: "",
     };
   }
 
@@ -34,20 +37,16 @@ export default class Homepage extends React.Component {
     this.setState({ isSubmitted: true });
     console.log("handle submit", `${this.state.name} ${this.state.gender}`);
     const registrationData = {
-      uName: this.state.name,
-      uGender: this.state.gender,
+      userName: this.state.name,
+      gender: this.state.gender,
     };
-    // const registrationData = {
-    //   uCredentials: {
-    //     uName: this.state.name,
-    //     uGender: this.state.gender,
-    //   },
-    // };
+
     axios
       .post(usersBackendURL, registrationData)
       .then((response) => {
-        console.log("response: ", response);
+        console.log("response: ", response.data);
         this.setState({ successMsg: response.data, errMsg: "" });
+        // console.log("quizid: ", this.state.successMsg.slice(-7));
         // selectQuestions();
       })
       .catch((error) => {
@@ -111,7 +110,10 @@ export default class Homepage extends React.Component {
             </Form>
           </div>
         ) : (
-          <SelectQuestion categ={this.state.gender} />
+          <SelectQuestion
+            categ={this.state.gender}
+            quizId={this.state.successMsg.slice(-7)}
+          />
         )}
       </div>
     );
