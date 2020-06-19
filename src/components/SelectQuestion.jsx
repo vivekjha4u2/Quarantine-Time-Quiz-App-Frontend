@@ -11,6 +11,7 @@ export default class SelectQuestion extends React.Component {
       usersQuestions: [],
       clicked: false,
       temp: 0,
+      quesIndexAdded: [],
     };
   }
   componentDidMount() {
@@ -102,8 +103,27 @@ export default class SelectQuestion extends React.Component {
                         id={index}
                         className="btn-info"
                         onClick={() => {
-                          // console.log("temp: ", this.state.temp);
-                          this.addQuestion(item.question);
+                          // for loop is to check if index is already added if yes then
+                          // just increase temp flag is for
+                          //else case means if index is not added then add it.
+                          var flag = false;
+                          //for(let i=0; i<this.state.quesIndexAdded.length; i++)
+                          for (
+                            let i = 0;
+                            i < this.state.quesIndexAdded.length;
+                            i++
+                          ) {
+                            if (index === this.state.quesIndexAdded[i]) {
+                              document.getElementById("msg").innerHTML =
+                                "question already added";
+                              flag = true;
+                              break;
+                            }
+                          }
+                          if (flag === false) {
+                            this.state.quesIndexAdded.push(index);
+                            this.addQuestion(item.question);
+                          }
                           this.setState({
                             clicked: true,
                             temp:
@@ -127,6 +147,9 @@ export default class SelectQuestion extends React.Component {
                         Skip
                       </Button>
                     </div>
+                    <span id="msg" className="bg-danger text-light">
+                      this is a message
+                    </span>
                   </Card.Body>
                 </Card>
               </div>
