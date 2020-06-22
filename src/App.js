@@ -4,6 +4,8 @@ import Questionnaire from "./components/Questionnaire";
 import { Navbar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Homepage from "./components/Homepage";
+import FriendRegister from "./components/FriendRegister";
+import Answers from "./components/Answers";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import WebFont from "webfontloader";
@@ -37,7 +39,14 @@ function App() {
               path="/Questionnaire"
               component={() => <Questionnaire value=""></Questionnaire>}
             />
-            {/* <Route exact path="/product/Men" component={()=><Product value="Men"></Product>}/> */}
+
+            <Route
+              exact
+              path="/ans"
+              component={() => <Answers quizId="Q-10270" />}
+            />
+
+            <Route exact path="/quiz/:quizId" component={FriendRegister} />
 
             <Route path="/" component={Homepage} />
           </Switch>
