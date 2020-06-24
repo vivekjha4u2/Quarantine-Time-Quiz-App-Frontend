@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { Card, Button } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
 import Answers from "./Answers";
 
 export default class SelectQuestion extends React.Component {
@@ -14,6 +15,7 @@ export default class SelectQuestion extends React.Component {
       temp: 0,
       quesIndexAdded: [],
       goToAnswers: false,
+      qAddedWarning: false,
     };
   }
   componentDidMount() {
@@ -84,7 +86,7 @@ export default class SelectQuestion extends React.Component {
         {/* if quiz is created then show answers Component  */}
         {!this.state.goToAnswers ? (
           <div id="selectQuestionDiv" className="col-sm-1 col-md-3 mx-auto">
-            <h6 className="mt-1">Select 10 questions to create quiz</h6>
+            <h6 className="mt-2">Select 10 questions to create quiz</h6>
             {this.state.quesList.map((item, index) => {
               // console.log(index);
               if (index === this.state.temp) {
@@ -105,43 +107,59 @@ export default class SelectQuestion extends React.Component {
                         </Card.Subtitle>
                         <Card.Text>{item.question}</Card.Text>
                         <div className="row mx-auto">
+                          {!this.state.qAddedWarning ? (
+                            <Button
+                              id={index}
+                              className="btn-info"
+                              onClick={() => {
+                                // for loop is to check if index is already added if yes then
+                                // just increase temp flag is for
+                                //else case means if index is not added then add it.
+                                var flag = false;
+                                //for(let i=0; i<this.state.quesIndexAdded.length; i++)
+                                for (
+                                  let i = 0;
+                                  i < this.state.quesIndexAdded.length;
+                                  i++
+                                ) {
+                                  if (index === this.state.quesIndexAdded[i]) {
+                                    this.disabled = true;
+                                    flag = true;
+                                    this.setState({ qAddedWarning: true });
+                                    break;
+                                  }
+                                }
+                                if (flag === false) {
+                                  this.state.quesIndexAdded.push(index);
+                                  this.addQuestion(item.question);
+                                }
+                                this.setState({
+                                  clicked: true,
+                                  temp:
+                                    (this.state.temp + 1) %
+                                    this.state.quesList.length,
+                                });
+                              }}
+                            >
+                              Add this question
+                            </Button>
+                          ) : (
+                            <Button disabled>Already Added</Button>
+                          )}
                           <Button
-                            id={index}
-                            className="btn-info"
+                            className="btn-danger mx-auto"
                             onClick={() => {
-                              // for loop is to check if index is already added if yes then
-                              // just increase temp flag is for
-                              //else case means if index is not added then add it.
-                              var flag = false;
-                              //for(let i=0; i<this.state.quesIndexAdded.length; i++)
                               for (
                                 let i = 0;
                                 i < this.state.quesIndexAdded.length;
                                 i++
                               ) {
                                 if (index === this.state.quesIndexAdded[i]) {
-                                  this.disabled = true;
-                                  flag = true;
+                                  this.setState({ qAddedWarning: false });
                                   break;
                                 }
                               }
-                              if (flag === false) {
-                                this.state.quesIndexAdded.push(index);
-                                this.addQuestion(item.question);
-                              }
-                              this.setState({
-                                clicked: true,
-                                temp:
-                                  (this.state.temp + 1) %
-                                  this.state.quesList.length,
-                              });
-                            }}
-                          >
-                            Add this question
-                          </Button>
-                          <Button
-                            className="btn-danger mx-auto"
-                            onClick={() => {
+
                               this.setState({
                                 temp:
                                   (this.state.temp + 1) %
@@ -151,6 +169,10 @@ export default class SelectQuestion extends React.Component {
                           >
                             Skip
                           </Button>
+
+                          {this.state.qAddedWarning ? (
+                            <div style={{ color: "red" }}>Already added!</div>
+                          ) : null}
                         </div>
                       </Card.Body>
                     </Card>
@@ -173,7 +195,13 @@ export default class SelectQuestion extends React.Component {
             )}
           </div>
         ) : (
-          <Answers quizId={this.props.quizId} />
+          <Redirect
+            to={{
+              pathname: "/quiz/" + this.props.quizId,
+              // quizId=this.props.quizId
+            }}
+          />
+          // <Answers quizId={this.props.quizId} />
         )}
       </div>
     );

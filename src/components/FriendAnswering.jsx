@@ -49,6 +49,7 @@ export default class FriendAnswering extends React.Component {
           successMsg: "",
         });
       });
+    localStorage.setItem("friendName", this.state.pName);
   };
   fetchQuestions = () => {
     // {qid}
@@ -57,7 +58,7 @@ export default class FriendAnswering extends React.Component {
     axios
       .get(url)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         this.setState({
           usersQuestions: response.data,
           errorMessage: "",
@@ -86,7 +87,7 @@ export default class FriendAnswering extends React.Component {
       <div className="container-fluid">
         {this.state.usersQuestions.map((item, index) => {
           // console.log(index);
-          if (this.state.temp === this.state.usersQuestions.length) {
+          if (this.state.temp === this.state.usersQuestions.length / 2) {
             return <Answers key={index} quizId={this.state.qid} />;
           } else if (index === this.state.temp) {
             return (

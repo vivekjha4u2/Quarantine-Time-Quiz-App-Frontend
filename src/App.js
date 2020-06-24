@@ -1,19 +1,14 @@
 import React, { Fragment } from "react";
 import "./App.css";
 import Questionnaire from "./components/Questionnaire";
-import { Navbar } from "react-bootstrap";
+import { Navbar,Nav } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Homepage from "./components/Homepage";
 import FriendRegister from "./components/FriendRegister";
 import Answers from "./components/Answers";
+import About from "./components/About";
+import Contact from "./components/Contact";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-
-import WebFont from "webfontloader";
-WebFont.load({
-  google: {
-    families: ["sans-serif", "Sofia"],
-  },
-});
 
 function App() {
   return (
@@ -21,6 +16,7 @@ function App() {
       <Navbar expand="lg" style={{ backgroundColor: "#f54275" }}>
         <Navbar.Brand
           href="/"
+          id="sol"
           style={{
             color: "white",
             fontWeight: "bold",
@@ -29,6 +25,11 @@ function App() {
         >
           Q-Time
         </Navbar.Brand>
+        <Navbar.Toggle />
+  <Navbar.Collapse className="justify-content-end">
+  <Nav.Link href="/about">About</Nav.Link>
+      <Nav.Link href="/contact">Contact</Nav.Link>
+  </Navbar.Collapse>
       </Navbar>
 
       <Router>
@@ -43,8 +44,19 @@ function App() {
             <Route
               exact
               path="/ans"
-              component={() => <Answers quizId="Q-10270" />}
+              component={() => <Answers quizId="Q-14100" />}
             />
+            <Route
+              exact
+              path="/about"
+              component={() => <About />}
+            />
+            <Route
+              exact
+              path="/contact"
+              component={() => <Contact />}
+            />
+
 
             <Route exact path="/quiz/:quizId" component={FriendRegister} />
 

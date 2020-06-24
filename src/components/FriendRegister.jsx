@@ -2,6 +2,7 @@ import React from "react";
 import FriendAnswering from "./FriendAnswering";
 
 import { Button, Form } from "react-bootstrap";
+import Answers from "./Answers";
 
 export default class FriendRegister extends React.Component {
   constructor(props) {
@@ -10,6 +11,8 @@ export default class FriendRegister extends React.Component {
       pName: "",
       isSubmitted: false,
       qid: this.props.match.params.quizId,
+      userName: localStorage.getItem("userName"),
+      isFriendAlreadyAnswered: localStorage.getItem("friendName"),
     };
   }
   componentDidMount() {}
@@ -27,11 +30,19 @@ export default class FriendRegister extends React.Component {
   render() {
     return (
       <div className="container-fluid">
-        {!this.state.isSubmitted ? (
+        {this.state.userName !== null ? (
+          <Answers quizId={this.state.qid}></Answers>
+        ) : this.state.isFriendAlreadyAnswered !== null ? (
+          <Answers quizId={this.state.qid}></Answers>
+        ) : !this.state.isSubmitted ? (
           <Form onSubmit={this.handleSubmit}>
+            <h6 id="sol" className="mt-3">
+              Lets see! How well do you know me?
+            </h6>
             <Form.Group controlId="formBasicName">
-              <Form.Label>Name: </Form.Label>
+              {/* <Form.Label>Name: </Form.Label> */}
               <Form.Control
+                className="mt-3"
                 type="text"
                 placeholder="Enter your name"
                 value={this.state.pName}

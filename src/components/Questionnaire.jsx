@@ -35,11 +35,12 @@ export default class Homepage extends React.Component {
     e.preventDefault();
     // alert(`${this.state.name} ${this.state.gender}`);
     this.setState({ isSubmitted: true });
-    console.log("handle submit", `${this.state.name} ${this.state.gender}`);
+    // console.log("handle submit", `${this.state.name} ${this.state.gender}`);
     const registrationData = {
       userName: this.state.name,
       gender: this.state.gender,
     };
+    localStorage.setItem("userName", this.state.name);
 
     axios
       .post(usersBackendURL, registrationData)
@@ -65,10 +66,14 @@ export default class Homepage extends React.Component {
       <div className="container-fluid">
         {!this.state.isSubmitted ? (
           <div>
+            <h4 id="sol" className="mt-3 ">
+              Create Your Questionnaire
+            </h4>
             <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="formBasicName">
-                <Form.Label>Name: </Form.Label>
+                {/* <Form.Label>Name: </Form.Label> */}
                 <Form.Control
+                className="mt-3 "
                   type="text"
                   placeholder="Enter your name"
                   value={this.state.name}
