@@ -49,7 +49,7 @@ export default class FriendAnswering extends React.Component {
           successMsg: "",
         });
       });
-    localStorage.setItem(this.state.qid+"friendName", this.state.pName);
+    localStorage.setItem(this.state.qid + "friendName", this.state.pName);
   };
   fetchQuestions = () => {
     // {qid}
@@ -86,16 +86,13 @@ export default class FriendAnswering extends React.Component {
     return (
       <div className="container-fluid">
         {this.state.usersQuestions.map((item, index) => {
-          console.log("index",index);
+          console.log("item ", item);
           if (index === this.state.temp) {
             return (
               <div key={index}>
                 <h6 className="mt-1">Try Answering and give reasons too</h6>
                 <Card className="card shadow  mt-2 ">
-                  <Card.Img
-                    variant="top"
-                    src={item.url}
-                  />
+                  <Card.Img variant="top" src={item.url} />
                   <Card.Body>
                     <Card.Subtitle className="mb-2 text-muted">
                       Question
@@ -127,9 +124,8 @@ export default class FriendAnswering extends React.Component {
                 </Card>
               </div>
             );
-          }else if (this.state.temp === this.state.usersQuestions.length ) {
+          } else if (this.state.temp === this.state.usersQuestions.length) {
             return <Answers key={index} quizId={this.state.qid} />;
-            
           }
         })}
       </div>
