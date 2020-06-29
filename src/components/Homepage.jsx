@@ -13,7 +13,7 @@ export default class Homepage extends React.Component {
         {/* {this.state.success.length>0?<Redirect to="/order"></Redirect>:""} */}
 
         <button style={{ margin: 2 + "rem" }}>
-          <a href="/Questionnaire">
+          <a href="/quiz">
             <div className="card" style={{ width: 18 + "rem" }}>
               <img
                 style={{ height: 14 + "rem" }}

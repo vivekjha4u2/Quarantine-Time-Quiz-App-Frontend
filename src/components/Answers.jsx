@@ -8,8 +8,8 @@ export default class Answers extends React.Component {
     this.state = {
       usersQNA: [],
       qid: this.props.quizId,
-      userName: localStorage.getItem("userName"),
-      friendName: localStorage.getItem("friendName"),
+      userName: localStorage.getItem(this.props.quizId + "userName"),
+      friendName: localStorage.getItem(this.props.quizId + "friendName"),
       copySuccess: false,
     };
   }
@@ -88,15 +88,24 @@ export default class Answers extends React.Component {
                 ) : null}
               </div>
               <br></br>
-              <a
-                href={
-                  "whatsapp://send?text=https://localhost:3000/quiz/" +
-                  this.state.qid
-                }
-                data-action="share/whatsapp/share"
-              >
-                Share in Whatsapp
-              </a>
+
+              <div>
+                <Button
+                  className="btn-success "
+                  href={
+                    "whatsapp://send?text=https://localhost:3000/quiz/" +
+                    this.state.qid
+                  }
+                  data-action="share/whatsapp/share"
+                  target="_blank"
+                >
+                  <img
+                    src="https://dare2020.site/images/common/whatsapp.svg"
+                    alt="ds"
+                  />
+                  <span style={{ color: "white" }}> Share in Whatsapp</span>
+                </Button>
+              </div>
             </div>
           ) : this.state.friendName !== null ? (
             <div>
@@ -111,16 +120,13 @@ export default class Answers extends React.Component {
             <div></div>
           )}
         </div>
-        <h5 className="btn btn-block btn-info">View Answers:</h5>
+        <h5 className="btn btn-block btn-info mt-3">View Answers:</h5>
         {this.state.usersQNA.map((item, index) => {
-          if (index < 10) {
+          if (index < 20) {
             return (
               <Card className="card shadow mt-2" key={index}>
                 <div>
-                  <Card.Img
-                    variant="top"
-                    src={item.url}
-                  />
+                  <Card.Img variant="top" src={item.url} />
                   <Card.Body
                   // style={{
                   //   backgroundImage:
@@ -146,8 +152,8 @@ export default class Answers extends React.Component {
                         {ansItem.answer}
                         <strong
                           style={{
-                            backgroundImage:
-                              "url( https://jono21.files.wordpress.com/2012/07/pattern-03.jpg)",
+                            // backgroundImage:
+                            //   "url( https://jono21.files.wordpress.com/2012/07/pattern-03.jpg)",
                             color: "purple",
                             textAlign: "right",
                           }}

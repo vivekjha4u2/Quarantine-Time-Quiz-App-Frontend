@@ -40,13 +40,18 @@ export default class Homepage extends React.Component {
       userName: this.state.name,
       gender: this.state.gender,
     };
-    localStorage.setItem("userName", this.state.name);
+    
 
     axios
       .post(usersBackendURL, registrationData)
       .then((response) => {
-        console.log("response: ", response.data);
+        // console.log("response: ", response.data);
         this.setState({ successMsg: response.data, errMsg: "" });
+
+          //key is quizId+userName
+          localStorage.setItem(this.state.successMsg.slice(-7)+"userName", this.state.name);
+          
+
         // console.log("quizid: ", this.state.successMsg.slice(-7));
         // selectQuestions();
       })
@@ -58,6 +63,8 @@ export default class Homepage extends React.Component {
           successMsg: "",
         });
       });
+
+    
     //save username in db and create questionaire for him
     // <SelectQuestion />;
   };

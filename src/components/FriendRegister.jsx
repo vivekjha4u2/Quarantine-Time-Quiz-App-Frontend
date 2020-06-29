@@ -11,8 +11,12 @@ export default class FriendRegister extends React.Component {
       pName: "",
       isSubmitted: false,
       qid: this.props.match.params.quizId,
-      userName: localStorage.getItem("userName"),
-      isFriendAlreadyAnswered: localStorage.getItem("friendName"),
+      userName: localStorage.getItem(
+        this.props.match.params.quizId + "userName"
+      ),
+      isFriendAlreadyAnswered: localStorage.getItem(
+        this.props.match.params.quizId + "friendName"
+      ),
     };
   }
   componentDidMount() {}
@@ -44,7 +48,7 @@ export default class FriendRegister extends React.Component {
               <Form.Control
                 className="mt-3"
                 type="text"
-                placeholder="Enter your name"
+                placeholder="Enter your full name"
                 value={this.state.pName}
                 onChange={this.handlePNameChange}
               />

@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import "./App.css";
 import Questionnaire from "./components/Questionnaire";
-import { Navbar,Nav } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Homepage from "./components/Homepage";
 import FriendRegister from "./components/FriendRegister";
@@ -26,10 +26,15 @@ function App() {
           Q-Time
         </Navbar.Brand>
         <Navbar.Toggle />
-  <Navbar.Collapse className="justify-content-end">
-  <Nav.Link href="/about">About</Nav.Link>
-      <Nav.Link href="/contact">Contact</Nav.Link>
-  </Navbar.Collapse>
+        <Navbar.Collapse className="justify-content-end">
+          <Nav.Link href="/about" className="btn-secondary mt-1">
+            About
+          </Nav.Link>
+
+          <Nav.Link href="/contact" className="btn-secondary mt-1">
+            Contact
+          </Nav.Link>
+        </Navbar.Collapse>
       </Navbar>
 
       <Router>
@@ -37,7 +42,7 @@ function App() {
           <Switch>
             <Route
               exact
-              path="/Questionnaire"
+              path="/quiz"
               component={() => <Questionnaire value=""></Questionnaire>}
             />
 
@@ -46,17 +51,8 @@ function App() {
               path="/ans"
               component={() => <Answers quizId="Q-14100" />}
             />
-            <Route
-              exact
-              path="/about"
-              component={() => <About />}
-            />
-            <Route
-              exact
-              path="/contact"
-              component={() => <Contact />}
-            />
-
+            <Route exact path="/about" component={() => <About />} />
+            <Route exact path="/contact" component={() => <Contact />} />
 
             <Route exact path="/quiz/:quizId" component={FriendRegister} />
 

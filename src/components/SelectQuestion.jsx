@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 import { Card, Button } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
-import Answers from "./Answers";
 
 export default class SelectQuestion extends React.Component {
   constructor(props) {
@@ -23,33 +22,59 @@ export default class SelectQuestion extends React.Component {
   }
   addQuestion = (ques) => {
     this.state.usersQuestions.push(ques);
+    console.log(this.state.usersQuestions);
   };
 
   createQuiz = () => {
-    this.state.usersQuestions.forEach(this.postQuiz);
+    const quizBackendURL = "http://localhost:5564/quiz/create";
+    for (let i = 0; i < this.state.usersQuestions.length; i++) {
+      const quizData = {
+        quizId: this.props.quizId,
+        question: this.state.usersQuestions[i],
+      };
+      axios
+        .post(quizBackendURL, quizData)
+        .then((response) => {
+          console.log("response: ", response);
+          this.setState({ successMsg: response.data, errMsg: "" });
+        })
+        .catch((error) => {
+          this.setState({
+            errMsg: error.response
+              ? error.response.data.message
+              : "Internal Server Error",
+            successMsg: "",
+          });
+        });
+    }
+
     this.setState({ goToAnswers: true });
   };
-  postQuiz = (item, index) => {
-    const quizBackendURL = "http://localhost:5564/quiz/create";
-    const quizData = {
-      quizId: this.props.quizId,
-      question: item,
-    };
-    axios
-      .post(quizBackendURL, quizData)
-      .then((response) => {
-        console.log("response: ", response);
-        this.setState({ successMsg: response.data, errMsg: "" });
-      })
-      .catch((error) => {
-        this.setState({
-          errMsg: error.response
-            ? error.response.data.message
-            : "Internal Server Error",
-          successMsg: "",
-        });
-      });
-  };
+  // createQuiz = () => {
+  //   // this.state.usersQuestions.forEach(this.postQuiz);
+  //   this.setState({ goToAnswers: true });
+  // };
+  // postQuiz = (item, index) => {
+  //   const quizBackendURL = "http://localhost:5564/quiz/create";
+  //   const quizData = {
+  //     quizId: this.props.quizId,
+  //     question: item,
+  //   };
+  //   axios
+  //     .post(quizBackendURL, quizData)
+  //     .then((response) => {
+  //       console.log("response: ", response);
+  //       this.setState({ successMsg: response.data, errMsg: "" });
+  //     })
+  //     .catch((error) => {
+  //       this.setState({
+  //         errMsg: error.response
+  //           ? error.response.data.message
+  //           : "Internal Server Error",
+  //         successMsg: "",
+  //       });
+  //     });
+  // };
 
   fetchQuestions = () => {
     const url = "http://localhost:5564/question/" + this.state.category;
@@ -86,7 +111,9 @@ export default class SelectQuestion extends React.Component {
         {/* if quiz is created then show answers Component  */}
         {!this.state.goToAnswers ? (
           <div id="selectQuestionDiv" className="col-sm-1 col-md-3 mx-auto">
-            <h6 className="mt-2">Select 10 questions to create quiz</h6>
+            <h6 className="mt-2">
+              Select atleast 10 questions to create questionnaire
+            </h6>
             {this.state.quesList.map((item, index) => {
               // console.log(item);
               if (index === this.state.temp) {
@@ -177,9 +204,17 @@ export default class SelectQuestion extends React.Component {
                 );
               }
             })}
-            {this.state.usersQuestions.length === 10 ? (
-              this.createQuiz()
+            {this.state.usersQuestions.length >= 10 ? (
+              <Button
+                onClick={() => {
+                  this.createQuiz();
+                }}
+                className="btn-success fixed-bottom float-right"
+              >
+                Create Quiz
+              </Button>
             ) : (
+              // this.createQuiz()
               <Button
                 className="btn-secondary fixed-bottom float-right"
                 disabled
