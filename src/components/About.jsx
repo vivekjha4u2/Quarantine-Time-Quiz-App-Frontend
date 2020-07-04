@@ -10,7 +10,7 @@ export default class About extends React.Component {
   render() {
     return (
       <div className="container-fluid">
-        <h3>Built by ST and VJ</h3>
+        <h3 className="my-2">Built by ST and VJ</h3>
       </div>
     );
   }

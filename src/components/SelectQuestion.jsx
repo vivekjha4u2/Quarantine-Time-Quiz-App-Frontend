@@ -10,18 +10,21 @@ export default class SelectQuestion extends React.Component {
       category: this.props.categ,
       quesList: [],
       usersQuestions: [],
+      urlList:[],
       clicked: false,
       temp: 0,
       quesIndexAdded: [],
       goToAnswers: false,
       qAddedWarning: false,
+
     };
   }
   componentDidMount() {
     this.fetchQuestions();
   }
-  addQuestion = (ques) => {
+  addQuestion = (ques,url) => {
     this.state.usersQuestions.push(ques);
+    this.state.urlList.push(url);
     console.log(this.state.usersQuestions);
   };
 
@@ -31,6 +34,7 @@ export default class SelectQuestion extends React.Component {
       const quizData = {
         quizId: this.props.quizId,
         question: this.state.usersQuestions[i],
+        url:this.state.urlList[i]
       };
       axios
         .post(quizBackendURL, quizData)
@@ -155,7 +159,7 @@ export default class SelectQuestion extends React.Component {
                                 }
                                 if (flag === false) {
                                   this.state.quesIndexAdded.push(index);
-                                  this.addQuestion(item.question);
+                                  this.addQuestion(item.question,item.url);
                                 }
                                 this.setState({
                                   clicked: true,

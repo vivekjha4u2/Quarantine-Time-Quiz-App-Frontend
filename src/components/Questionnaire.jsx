@@ -34,6 +34,10 @@ export default class Homepage extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     // alert(`${this.state.name} ${this.state.gender}`);
+    if(this.state.name ==="" || this.state.gender===""){
+      alert("Please enter your name and gender");
+    }
+    else{
     this.setState({ isSubmitted: true });
     // console.log("handle submit", `${this.state.name} ${this.state.gender}`);
     const registrationData = {
@@ -64,7 +68,7 @@ export default class Homepage extends React.Component {
         });
       });
 
-    
+    }
     //save username in db and create questionaire for him
     // <SelectQuestion />;
   };
